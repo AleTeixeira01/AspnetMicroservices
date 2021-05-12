@@ -1,6 +1,6 @@
 ﻿//using AutoMapper;
 using Basket.API.Entities;
-//using Basket.API.GrpcServices;
+using Basket.API.GrpcServices;
 using Basket.API.Repositories;
 //using EventBus.Messages.Events;
 //using MassTransit;
@@ -16,22 +16,22 @@ namespace Basket.API.Controllers
     public class BasketController : ControllerBase
     {
         private readonly IBasketRepository _repository;
-        //private readonly DiscountGrpcService _discountGrpcService;
+        private readonly DiscountGrpcService _discountGrpcService;
         // private readonly IPublishEndpoint _publishEndpoint;
         // private readonly IMapper _mapper;
 
-        /*public BasketController(IBasketRepository repository, DiscountGrpcService discountGrpcService, IPublishEndpoint publishEndpoint, IMapper mapper)
+        public BasketController(IBasketRepository repository, DiscountGrpcService discountGrpcService)//, IPublishEndpoint publishEndpoint, IMapper mapper)
         {
             _repository = repository ?? throw new ArgumentNullException(nameof(repository));
             _discountGrpcService = discountGrpcService ?? throw new ArgumentNullException(nameof(discountGrpcService));
-            _publishEndpoint = publishEndpoint ?? throw new ArgumentNullException(nameof(publishEndpoint));
-            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
-        }*/
+           // _publishEndpoint = publishEndpoint ?? throw new ArgumentNullException(nameof(publishEndpoint));
+           // _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+        }
 
-        public BasketController(IBasketRepository repository)
+        /*public BasketController(IBasketRepository repository)
         {
             _repository = repository ?? throw new ArgumentNullException(nameof(repository));
-        }
+        }*/
 
         [HttpGet("{userName}", Name = "GetBasket")]
         [ProducesResponseType(typeof(ShoppingCart), (int)HttpStatusCode.OK)]
@@ -41,7 +41,7 @@ namespace Basket.API.Controllers
             return Ok(basket ?? new ShoppingCart(userName));
         }
 
-        /* [HttpPost]
+        [HttpPost]
          [ProducesResponseType(typeof(ShoppingCart), (int)HttpStatusCode.OK)]
          public async Task<ActionResult<ShoppingCart>> UpdateBasket([FromBody] ShoppingCart basket)
          {
@@ -65,7 +65,7 @@ namespace Basket.API.Controllers
              return Ok();
          }
 
-         [Route("[action]")]
+        /* [Route("[action]")]
          [HttpPost]
          [ProducesResponseType((int)HttpStatusCode.Accepted)]
          [ProducesResponseType((int)HttpStatusCode.BadRequest)]
@@ -93,20 +93,7 @@ namespace Basket.API.Controllers
 
              return Accepted();
          }*/
-        [HttpPost]
-        [ProducesResponseType(typeof(ShoppingCart), (int)HttpStatusCode.OK)]
-        public async Task<ActionResult<ShoppingCart>> UpdateBasket([FromBody]ShoppingCart basket)
-        {
-            return Ok(await _repository.UpdateBasket(basket));
-        }
-
-        [HttpDelete("{userName}", Name = "DeleteBasket")]
-        [ProducesResponseType(typeof(void), (int)HttpStatusCode.OK)]
-        public async Task<IActionResult> DeleteBasket(string userName)
-        {
-            await _repository.DeleteBasket(userName);
-            return Ok();
-        }
+       
     }   
 
 }
